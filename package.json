@@ -1,0 +1,13 @@
+{
+  "name": "project-browser",
+  "version": "1.0.0",
+  "description": "A Browser",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^19.0.7"
+  },
+  "dependencies": {}
+}

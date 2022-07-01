@@ -1,0 +1,318 @@
+html, body {
+    height: 100%;
+    font-family: sans-serif;
+}
+
+body {
+    margin: auto;
+    user-select: none;
+    background-color: rgb(61, 61, 61);
+}
+
+#content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#header {
+    -webkit-app-region: drag;
+    width: 100%;
+    height: 35px;
+    background-color: rgb(61, 61, 61);
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    justify-content: space-between;
+}
+
+#header button {
+    -webkit-app-region: no-drag;
+    color: white;
+}
+
+#header #tabs {
+    height: 100%;
+    float: left;
+    display: flex;
+    max-width: 80%;
+}
+
+#header #tabs button {
+    height: 80%;
+    background-color: rgb(97, 97, 97);
+    border: 0;
+    padding: 0;
+    float:left;
+    margin: 5px 5px 0 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    align-self: flex-end;
+    overflow: hidden;
+}
+
+#header #tabs button img {
+    width: 20px;
+    height: 20px;
+    margin: 4px 0 0 0;
+}
+
+#header #tabs button p {
+    display: none;
+    margin: 7px 0 0 40%;
+    white-space: nowrap;
+}
+
+#header #tabs button input[type="text"] {
+    display: none;
+    margin: auto;
+    width: 80%;
+    height: 70%;
+    border: 0;
+    background-color: rgb(133, 133, 133);
+    color: white;
+    text-align: center;
+}
+
+#header #tabs button input[type="text"]:focus {
+    outline: none;
+}
+
+@keyframes tabAppear {
+    0% {width: 30px;}
+    100% {width: 80px;}
+}
+
+@keyframes tabExpand {
+    0% {width: 80px;}
+    100% {width: 140px;}
+}
+
+@keyframes tabExpandplus {
+    0% {width: 140px;}
+    100% {width: 240px;}
+}
+
+#header #tabs button:not(#new) {
+    width: 80px;
+    animation: tabAppear 0.1s;
+}
+
+#header #tabs button:not(#new):not(.edit):hover {
+    width: 140px;
+    animation: tabExpand 0.2s;
+}
+
+#header #tabs button:not(#new).edit {
+    width: 240px;
+    animation: tabExpandplus 0.2s;
+}
+
+#header #tabs button:not(#new).edit img {
+    display: none;
+}
+
+#header #tabs button:not(#new).edit input[type="text"] {
+    display: flex;
+}
+
+#header #tabs button:not(#new):not(.edit):hover img {
+    float: left;
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
+@keyframes slide {
+    0% { right: 0%; }
+    100% { right: 100%; }
+}
+
+#header #tabs button:not(#new):not(.edit):hover p {
+    display: flex;
+    position: relative;
+}
+
+#header #tabs button:not(#new):not(.edit):hover p.overflow-title {
+    animation: slide 4s infinite;
+}
+
+#header #tabs button:hover, #header #tabs button.select {
+    background-color: rgb(133, 133, 133);
+}
+
+#header #tabs button#new {
+    width: 25px;
+}
+
+#header #tabs button#new::before {
+    content: '+';
+    font-size: larger;
+}
+
+#header #tabs button#new.over {
+    background-color: rgb(128, 0, 0);
+    width: 32;
+}
+
+#header #tabs button#new.over::before {
+    content: '-';
+    font-size: larger;
+}
+
+#header #window-control {
+    height: 100%;
+}
+
+#header #window-control button {
+    width: 50px;
+    height: 100%;
+    background-color: rgb(97, 97, 97);
+    border: 0;
+    margin: 0;
+    padding: 0;
+    float: right;
+    text-align: center;
+    color: white;
+}
+
+#header #window-control button:not(:first-child) {
+    height: 60%;
+}
+
+#header #window-control button:last-child {
+    border-end-start-radius: 20px;
+}
+
+#header #window-control button:first-child {
+    border-end-start-radius: 40%;
+}
+
+#header #window-control button:hover {
+    background-color: rgb(51, 51, 51);
+}
+
+#header #window-control button.yellow:hover {
+    background-color: rgb(189, 186, 15);
+}
+
+#header #window-control button.yellow:active:hover {
+    background-color: rgb(167, 164, 16);
+}
+
+#header #window-control button.orange:hover {
+    background-color: rgb(202, 146, 26);
+}
+
+#header #window-control button.orange:active:hover {
+    background-color: rgb(173, 125, 21);
+}
+
+#header #window-control button.red:hover {
+    background-color: rgb(128, 0, 0);
+}
+
+#header #window-control button.red:active:hover {
+    background-color: rgb(141, 15, 15);
+}
+
+#center {
+    flex-grow: 1;
+    display: flex;
+}
+
+#center webview {
+    flex-grow: 1;
+}
+
+#options {
+    transition: visibility 0s, height 0.2s;
+    visibility: visible;
+    height: 200px;
+    width: 200px;
+    top: 35px;
+    background-color: rgb(133, 133, 133);
+    position: absolute;
+    border-radius: 0 5% 5% 5%;
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+#options.hidden {
+    transition: visibility 0.1s, height 0.3s;
+    visibility: hidden;
+    height: 0px;
+}
+
+#options:focus {
+    outline: none;
+}
+
+#options button.go.back {
+    float: left;
+    border-bottom-right-radius: 10px;
+    border-width: 0px 2px 2px 0px;
+}
+
+#options button.go.forward {
+    float: right;
+    border-bottom-left-radius: 10px;
+    border-width: 0px 0px 2px 2px;
+}
+
+#options button.go {
+    width: 40px;
+    height: 25px;
+    background-color: rgb(97, 97, 97);
+    padding: none;
+    color: white;
+    border-style: none;
+    border-color: rgb(97, 97, 97);
+}
+
+#options button.go:active {
+    background-color: rgb(133, 133, 133);
+    border-style: solid;
+}
+
+#context {
+    position: absolute;
+    background-color: rgb(97, 97, 97);
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    width: 200px;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 2px;
+}
+
+#context.hidden {
+    display: none;
+}
+
+#context li {
+    color: white;
+    font-size: small;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px 10px;
+}
+
+#context li::after {
+    color: white;
+    float: right;
+    content: '<?>';
+}
+
+#context li:hover {
+    background-color: rgb(133, 133, 133);
+}
+
+#context hr {
+    background-color: rgb(133, 133, 133);
+    border: none;
+    height: 1px;
+    margin: 0;
+}

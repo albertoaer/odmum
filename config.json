@@ -1,0 +1,6 @@
+{
+    "defaultSource" : "welcome.html",
+    "switches" : {
+        "disable-features" : "CrossOriginOpenerPolicy"
+    }
+}

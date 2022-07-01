@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="./styles.css" rel="stylesheet">
+    <title>Web Browser</title>
+  </head>
+  <body>
+    <div id="options" class="hidden">
+      <button class="go back">&#8592;</button>
+      <button class="go forward">&#8594;</button>
+    </div>
+    <ul id="context" class="hidden"></ul>
+    <div id="content">
+      <div id="header">
+        <div id="tabs">
+          <button id="new"></button>
+        </div>
+        <div id="window-control">
+          <button class="red" onclick="browser.close()"></button>
+          <button class="orange" onclick="browser.maximize()"></button>
+          <button class="yellow" onclick="browser.minimize()"></button>
+        </div>
+      </div>
+      <div id="center">
+      </div>
+    </div>
+    <script src="./renderer/renderer.js" type="module"></script>
+  </body>
+</html>
