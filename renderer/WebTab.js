@@ -1,5 +1,5 @@
 import tabOptions from "./TabOptions.js";
-import ContextMenu from "./ContextMenu.js";
+import contextMenu from "./contextMenu.js";
 import specialTab from "./SpecialTab.js";
 
 export default class WebTab {
@@ -46,7 +46,7 @@ export default class WebTab {
         });
 
         this.#webview.addEventListener('context-menu', event => {
-            ContextMenu.show(this.#getContextCommands(event), {x: event.params.x, y: event.params.y});
+            contextMenu.show(this.#getContextCommands(event), {x: event.params.x, y: event.params.y});
         });
 
         this.#webview.addEventListener('did-navigate', event => {
