@@ -58,6 +58,10 @@ export default class WebTab {
                 this.#savedhistory.push(event.url);
         });
 
+        this.#webview.addEventListener('new-window', event => {
+            specialTab.createTab({ defaultSource: event.url });
+        });
+
         this.#webview.src = this.#configuration.defaultSource;
 
         let center = document.querySelector('#center');

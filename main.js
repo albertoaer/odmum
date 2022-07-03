@@ -57,6 +57,11 @@ app.on('ready', () => {
     })
 })
 
+app.on('web-contents-created', (_, contents) => {
+    if (contents.getType() === 'webview')
+        contents.on('new-window', event => event.preventDefault());
+});
+
 app.on('window-all-closed', () => {
     if (process.platform != 'darwin') app.quit();
 })
