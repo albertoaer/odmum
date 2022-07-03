@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain, session, globalShortcut} = require('electron');
+const {app, BrowserWindow, ipcMain, session, globalShortcut, webContents} = require('electron');
 const path = require('path');
 const activeConfiguration = require('./config.json');
 
@@ -9,33 +9,35 @@ for (const swt of Object.entries(activeConfiguration.switches)) { //Chromium con
     }
 }
 
-function createWindow(x=undefined, y=undefined) {
+function createWindow(x=undefined, y=undefined, newTab=true) {
     const window = new BrowserWindow({
         width: 1200,
         height: 800,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            webviewTag: true,
+            webviewTag: true
         },
         show: false,
         frame: false,
         x,
         y
-    })
-    console.log(window.webContents.setEmbedder);
+    });
     window.setMenu(null);
     window.loadFile('index.html');
     window.once('ready-to-show', () => window.show());
+    ipcMain.handleOnce('config', _ => {
+        return {id:window.id, state:{newTab}};
+    });
 }
 
 function setUpShortcuts() {
-    const windowByEvent = event => BrowserWindow.fromId(event.sender.id);
+    const windowByEvent = event => BrowserWindow.fromWebContents(event.sender);
 
     ipcMain.on('close', event => windowByEvent(event).close());
     ipcMain.on('maximize', event => windowByEvent(event).isMaximized() ? windowByEvent(event).unmaximize() : windowByEvent(event).maximize());
     ipcMain.on('minimize', event => windowByEvent(event).minimize());
-    ipcMain.on('newWindow', (event, ...args) => createWindow(args[0], args[1]));
-    
+    ipcMain.on('newWindow', (_, x, y) => createWindow(x, y, false));
+
     const window = () => BrowserWindow.getFocusedWindow();
 
     if (process.defaultApp) { //load default functionality
