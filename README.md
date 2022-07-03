@@ -12,7 +12,7 @@ Electron fully costumizable web browser focused on privacy
 
 1. Clone the repo
 ```
-git clone https://github.com/albertoaer
+git clone https://github.com/albertoaer/odmum
 ```
 2. Install all the npm dependencies
 ```
