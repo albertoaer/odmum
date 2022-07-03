@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain, session, globalShortcut, webContents} = require('electron');
+const {app, BrowserWindow, ipcMain, session, globalShortcut} = require('electron');
 const path = require('path');
 const activeConfiguration = require('./config.json');
 
