@@ -1,4 +1,3 @@
-import state from "./WindowState.js";
 import tabOptions from "./TabOptions.js";
 import ContextMenu from "./ContextMenu.js";
 
@@ -81,23 +80,28 @@ export default class WebTab {
         tab.draggable = true;
         tab.ondragstart = event => {
             event.dataTransfer.setData('tab-id', this.#id);
+            event.dataTransfer.setData('owner', browser.id);
             event.dataTransfer.setDragImage(img, 0, 0);
-            state.dragging = true;
         }
         tab.ondragover = event => {
-            if (event.preventDefault && state.dragging) event.preventDefault();
+            event.dataTransfer.dropEffect = "copy";
+            event.preventDefault();
         }
         tab.ondrop = event => {
-            if (event.preventDefault) event.preventDefault();
-            let ntab = document.querySelector(`#tabs button#tab-${event.dataTransfer.getData('tab-id')}`);
+            event.preventDefault();
+            let owner = event.dataTransfer.getData('owner');
+            let tabid = event.dataTransfer.getData('tab-id');
+            if (browser.id != owner) {
+                console.log(browser.requestTab(parseInt(owner), parseInt(tabid)))
+            }
+            let ntab = document.querySelector(`#tabs button#tab-${tabid}`);
             let target = ntab.getBoundingClientRect().x < tab.getBoundingClientRect().x ? tab.nextSibling : tab;
             tab.parentElement.insertBefore(ntab, target);
         }
         tab.ondragend = event => {
-            state.dragging = false;
             if (event.dataTransfer.dropEffect === 'none') {
                 let {screenX, screenY} = event;
-                browser.newWindow(screenX, screenY);
+                browser.newWindow(screenX, screenY, false);
             }
         }
         return tab;

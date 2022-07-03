@@ -1,4 +1,3 @@
-import state from "./WindowState.js";
 import WebTab from "./WebTab.js";
 import webViewPool from "./WebViewPool.js";
 
@@ -9,9 +8,10 @@ export class SpecialTab {
         this.#view = document.getElementById('new');
         this.#view.onclick = this.createTab.bind(this);
         this.#view.ondragover = event => {
-            if (event.preventDefault && state.dragging) event.preventDefault();
+            event.dataTransfer.dropEffect = "link";
+            event.preventDefault();
         };
-        this.#view.ondragenter = _ => { if (state.dragging) this.#view.classList.add('over') };
+        this.#view.ondragenter = _ => this.#view.classList.add('over');
         this.#view.ondragleave = _ => this.#view.classList.remove('over');
         this.#view.ondrop = event => {
             let id = event.dataTransfer.getData('tab-id');
