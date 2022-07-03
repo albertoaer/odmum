@@ -20,6 +20,8 @@ export class SpecialTab {
             //< 2 because, 1 element is the new tab
             if (document.querySelector(`#tabs`).childElementCount < 2) browser.close();
         };
+
+        this.#view.specialtab = this;
     }
 
     createTab() {
