@@ -14,20 +14,24 @@ export class SpecialTab {
         this.#view.ondragenter = _ => this.#view.classList.add('over');
         this.#view.ondragleave = _ => this.#view.classList.remove('over');
         this.#view.ondrop = event => {
+            event.preventDefault();
+            let owner = event.dataTransfer.getData('owner');
             let id = event.dataTransfer.getData('tab-id');
-            document.querySelector(`#tabs button#tab-${id}`).webtab.close();
+            if (browser.id == owner) {
+                document.querySelector(`#tabs button#tab-${id}`).webtab.close();
+                //< 2 because, 1 element is the new tab
+                if (document.querySelector(`#tabs`).childElementCount < 2) browser.close();
+            }
             this.#view.classList.remove('over');
-            //< 2 because, 1 element is the new tab
-            if (document.querySelector(`#tabs`).childElementCount < 2) browser.close();
         };
 
         this.#view.specialtab = this;
     }
 
-    createTab() {
+    createTab(configuration={}) {
         let tab = this.#view.parentNode.insertBefore(document.createElement('button'), this.#view);
         let webview = webViewPool.pickView();
-        return new WebTab(tab, webview, 15);
+        return new WebTab(tab, webview, configuration);
     }
 }
 

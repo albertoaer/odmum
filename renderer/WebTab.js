@@ -1,18 +1,24 @@
 import tabOptions from "./TabOptions.js";
 import ContextMenu from "./ContextMenu.js";
+import specialTab from "./SpecialTab.js";
 
 export default class WebTab {
     static #count = 0;
     #id;
     #tab;
     #webview;
+    #configuration;
     #savedhistory = [];
 
-    constructor(tab, webview, titleOverflow) {
+    constructor(tab, webview, configuration) {
         this.#id = WebTab.#count;
         this.#tab = tab;
         this.#webview = webview
-        this.titleOverflow = titleOverflow
+
+        this.#configuration = Object.assign({
+            titleOverflow: 15,
+            defaultSource: browser.activeConfiguration.defaultSource
+        }, configuration)
 
         this.#configureTab()
         this.#tab.webtab = this;
@@ -31,7 +37,7 @@ export default class WebTab {
             if (event.title) {
                 let titleView = this.#tab.getElementsByTagName('p')[0];
                 titleView.innerText = this.#tab.title = event.title;
-                if (event.title.length >= this.titleOverflow) {
+                if (event.title.length >= this.#configuration.titleOverflow) {
                     titleView.classList.add('overflow-title');
                 } else {
                     titleView.classList.remove('overflow-title');
@@ -52,7 +58,7 @@ export default class WebTab {
                 this.#savedhistory.push(event.url);
         });
 
-        this.#webview.src = browser.activeConfiguration.defaultSource;
+        this.#webview.src = this.#configuration.defaultSource;
 
         let center = document.querySelector('#center');
         center.appendChild(this.#webview);
@@ -81,6 +87,7 @@ export default class WebTab {
         tab.ondragstart = event => {
             event.dataTransfer.setData('tab-id', this.#id);
             event.dataTransfer.setData('owner', browser.id);
+            event.dataTransfer.setData('tab-config', JSON.stringify({ defaultSource: this.#webview.src }));
             event.dataTransfer.setDragImage(img, 0, 0);
         }
         tab.ondragover = event => {
@@ -91,17 +98,16 @@ export default class WebTab {
             event.preventDefault();
             let owner = event.dataTransfer.getData('owner');
             let tabid = event.dataTransfer.getData('tab-id');
-            if (browser.id != owner) {
-                console.log(browser.requestTab(parseInt(owner), parseInt(tabid)))
-            }
-            let ntab = document.querySelector(`#tabs button#tab-${tabid}`);
+            let tabconfig = JSON.parse(event.dataTransfer.getData('tab-config'));
+            console.log(tabconfig)
+            let ntab = browser.id == owner ? document.querySelector(`#tabs button#tab-${tabid}`) : specialTab.createTab(tabconfig);
             let target = ntab.getBoundingClientRect().x < tab.getBoundingClientRect().x ? tab.nextSibling : tab;
             tab.parentElement.insertBefore(ntab, target);
         }
         tab.ondragend = event => {
             if (event.dataTransfer.dropEffect === 'none') {
                 let {screenX, screenY} = event;
-                browser.newWindow(screenX, screenY, false);
+                browser.newWindow(screenX - 50, screenY - 50, { defaultSource: this.#webview.src });
             }
         }
         return tab;

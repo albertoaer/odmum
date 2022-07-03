@@ -9,7 +9,7 @@ for (const swt of Object.entries(activeConfiguration.switches)) { //Chromium con
     }
 }
 
-function createWindow(x=undefined, y=undefined, newTab=true) {
+function createWindow(x=undefined, y=undefined, newTab={}) {
     const window = new BrowserWindow({
         width: 1200,
         height: 800,
@@ -26,7 +26,7 @@ function createWindow(x=undefined, y=undefined, newTab=true) {
     window.loadFile('index.html');
     window.once('ready-to-show', () => window.show());
     ipcMain.handleOnce('config', _ => {
-        return {id:window.id, state:{newTab}};
+        return {id:window.id, state:{newTab}, activeConfiguration};
     });
 }
 
@@ -36,7 +36,7 @@ function setUpShortcuts() {
     ipcMain.on('close', event => windowByEvent(event).close());
     ipcMain.on('maximize', event => windowByEvent(event).isMaximized() ? windowByEvent(event).unmaximize() : windowByEvent(event).maximize());
     ipcMain.on('minimize', event => windowByEvent(event).minimize());
-    ipcMain.on('newWindow', (_, x, y) => createWindow(x, y, false));
+    ipcMain.on('newWindow', (_, x, y, newTab) => createWindow(x, y, newTab));
 
     const window = () => BrowserWindow.getFocusedWindow();
 
