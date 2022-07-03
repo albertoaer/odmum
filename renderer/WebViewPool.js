@@ -10,7 +10,7 @@ export class WebViewPool {
 
     #createViewTag() {
         let template = document.createElement('div');
-        template.innerHTML += `<webview allowpopups webpreferences="nativeWindowOpen=true"></webview>`;
+        template.innerHTML += `<webview allowpopups webpreferences="nativeWindowOpen=true" preload='./plugins/preload.js'></webview>`;
         this.#pool.unshift(template.firstChild); //Insert the browser at the begining of the pool
     }
 
