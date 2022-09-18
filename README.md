@@ -1,6 +1,6 @@
 # Odmum
 
-Electron fully costumizable web browser focused on privacy
+Web browser fully written in Javascript using [electron](https://github.com/electron/electron)
 
 ## Preview
 
