@@ -4,7 +4,6 @@ export class WebViewPool {
 
     constructor(poolSize) {
         this.#poolSize = poolSize || 1;
-        console.log(this.#poolSize);
         this.#preparePool();
     }
 
@@ -33,5 +32,4 @@ export class WebViewPool {
     }
 }
 
-//TODO: Checkout for a browser.activeConfiguration.poolSize property
-export default new WebViewPool();
+export default new WebViewPool(browser.activeConfiguration.poolSize);
