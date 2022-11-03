@@ -21,7 +21,6 @@ export class WebViewPool {
     }
 
     pickView() {
-        console.log(this.#pool)
         if (this.#pool.length == 0) this.#createViewTag();
         if (this.#pool.length > 0) {
             let view = this.#pool.pop();
