@@ -1,6 +1,8 @@
 const {app, BrowserWindow, ipcMain, session, globalShortcut} = require('electron');
 const path = require('path');
 const activeConfiguration = require('./config.json');
+const { readFileSync } = require('fs');
+const styles = readFileSync('./webview_style.css').toString('utf8');
 
 for (const swt of Object.entries(activeConfiguration.switches)) { //Chromium configuration
     let values = Array.isArray(swt[1]) ? swt[1] : [swt[1]];
@@ -26,7 +28,7 @@ function createWindow(x=undefined, y=undefined, newTab={}) {
     window.loadFile('index.html');
     window.once('ready-to-show', () => window.show());
     ipcMain.handleOnce('config', _ => {
-        return {id:window.id, state:{newTab}, activeConfiguration};
+        return {id:window.id, state:{newTab}, activeConfiguration, styles };
     });
 }
 
